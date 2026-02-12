@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "claim_id", "doc_id", "source_type", "doi", "pmid", "url",
+    "local_path", "retrieved_at", "sha256", "anchor_type", "anchor_quote",
+    "claim_text", "claim_type"
+  ],
+  "properties": {
+    "claim_id": {"type": "string"},
+    "doc_id": {"type": "string"},
+    "source_type": {"type": "string"},
+    "doi": {"type": ["string", "null"]},
+    "pmid": {"type": ["string", "null"]},
+    "url": {"type": ["string", "null"]},
+    "local_path": {"type": "string"},
+    "retrieved_at": {"type": "string"},
+    "sha256": {"type": ["string", "null"]},
+    "anchor_type": {"enum": ["pdf", "xml"]},
+    "page_number": {"type": ["integer", "null"]},
+    "section_heading": {"type": ["string", "null"]},
+    "anchor_quote": {"type": "string"},
+    "claim_text": {"type": "string"},
+    "claim_type": {
+      "enum": ["outcome", "method", "population", "complication", "anatomy", "technique", "other"]
+    },
+    "numbers": {"type": ["object", "null"]},
+    "errors": {
+      "type": ["array", "null"],
+      "items": {"type": "string"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"anchor_type": {"const": "pdf"}}},
+      "then": {"required": ["page_number"]}
+    },
+    {
+      "if": {"properties": {"anchor_type": {"const": "xml"}}},
+      "then": {"required": ["section_heading"]}
+    }
+  ]
+}

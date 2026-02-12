@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "figure_id", "doc_id", "doi", "pmid", "local_doc_path", "figure_path",
+    "source_type", "sha256", "retrieved_at"
+  ],
+  "properties": {
+    "figure_id": {"type": "string"},
+    "doc_id": {"type": "string"},
+    "doi": {"type": ["string", "null"]},
+    "pmid": {"type": ["string", "null"]},
+    "local_doc_path": {"type": "string"},
+    "figure_path": {"type": "string"},
+    "source_type": {"enum": ["pdf", "jats"]},
+    "page_number": {"type": ["integer", "null"]},
+    "xml_fig_id": {"type": ["string", "null"]},
+    "figure_label": {"type": ["string", "null"]},
+    "caption": {"type": ["string", "null"]},
+    "width": {"type": ["integer", "null"]},
+    "height": {"type": ["integer", "null"]},
+    "sha256": {"type": ["string", "null"]},
+    "license": {"type": ["string", "null"]},
+    "retrieved_at": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"source_type": {"const": "pdf"}}},
+      "then": {"required": ["page_number"]}
+    },
+    {
+      "if": {"properties": {"source_type": {"const": "jats"}}},
+      "then": {"required": ["xml_fig_id"]}
+    }
+  ]
+}

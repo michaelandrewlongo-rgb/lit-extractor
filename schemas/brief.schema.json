@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["slug", "query", "generated_at", "takeaways", "citations", "key_figures"],
+  "properties": {
+    "slug": {"type": "string"},
+    "query": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "takeaways": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "citation_ids"],
+        "properties": {
+          "text": {"type": "string"},
+          "citation_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "doc_id", "anchor_type", "anchor_quote"],
+        "properties": {
+          "claim_id": {"type": "string"},
+          "doc_id": {"type": "string"},
+          "doi": {"type": ["string", "null"]},
+          "pmid": {"type": ["string", "null"]},
+          "anchor_type": {"enum": ["pdf", "xml"]},
+          "page_number": {"type": ["integer", "null"]},
+          "section_heading": {"type": ["string", "null"]},
+          "anchor_quote": {"type": "string"}
+        }
+      }
+    },
+    "key_figures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["figure_id", "doc_id", "figure_path", "provenance"],
+        "properties": {
+          "figure_id": {"type": "string"},
+          "doc_id": {"type": "string"},
+          "figure_path": {"type": "string"},
+          "caption": {"type": ["string", "null"]},
+          "provenance": {"type": "string"},
+          "license": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

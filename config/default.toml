@@ -1,0 +1,29 @@
+[data]
+root = "data"
+sqlite_path = "data/lit.db"
+cache_dir = "data/cache"
+
+[network]
+user_agent = "lit-harvester/0.1"
+unpaywall_email = ""
+pubmed_api_key = ""
+
+[rate_limits]
+pubmed_per_sec = 3
+europepmc_per_sec = 3
+crossref_per_sec = 2
+openalex_per_sec = 3
+unpaywall_per_sec = 2
+clinicaltrials_per_sec = 2
+
+[retry]
+max_attempts = 5
+base_delay_ms = 300
+max_delay_ms = 5000
+
+[pipeline]
+default_limit = 500
+default_since = "30d"
+strict_qa = true
+top_k_sources = 5
+max_key_figures = 6
