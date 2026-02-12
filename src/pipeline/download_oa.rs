@@ -38,7 +38,19 @@ pub async fn run(app: &App, args: DownloadOaArgs) -> Result<()> {
         };
 
         let source = source_for_url(&url);
-        let bytes = app.api.download_bytes(source, &url).await?;
+        let bytes = match app.api.download_bytes(source, &url).await {
+            Ok(bytes) => bytes,
+            Err(err) => {
+                tracing::warn!(
+                    doc_id = %doc.doc_id,
+                    source,
+                    url = %url,
+                    error = %err,
+                    "skipping OA download for document"
+                );
+                continue;
+            }
+        };
 
         let ext = if looks_like_xml(&bytes) { "xml" } else { "pdf" };
         let dir = app.paths.oa_doc_dir(&doc.doc_id);

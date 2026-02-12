@@ -10,7 +10,7 @@ pub fn generate_candidates(text: &str) -> Vec<ClaimCandidate> {
     static SENTENCE_SPLIT: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     static DIGITS: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
 
-    let splitter = SENTENCE_SPLIT.get_or_init(|| Regex::new(r"(?m)(?<=[.!?])\s+").expect("regex"));
+    let splitter = SENTENCE_SPLIT.get_or_init(|| Regex::new(r"[.!?]\s+").expect("regex"));
     let digits = DIGITS.get_or_init(|| Regex::new(r"\d").expect("regex"));
 
     splitter
@@ -33,4 +33,16 @@ pub fn generate_candidates(text: &str) -> Vec<ClaimCandidate> {
             has_number: digits.is_match(sentence),
         })
         .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::generate_candidates;
+
+    #[test]
+    fn sentence_splitter_is_runtime_safe() {
+        let text = "Interhemispheric approach was used in 32 patients. Gross total resection was achieved in 26 cases.";
+        let out = generate_candidates(text);
+        assert!(!out.is_empty());
+    }
 }
